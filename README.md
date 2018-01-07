@@ -1,8 +1,10 @@
-Simple React application that uses Web Speech API in order to convert speech to text.
+Simple React application that uses [Web Speech API](https://w3c.github.io/speech-api/speechapi.html) in order to convert speech to text.
+
+## Demo
+[Live demo](http://linko.me/apps/speechtotext)
 
 ## Prerequisites
 - Google Chrome (tested with v.61) 
-- Node
 
 ## Development
 - `npm install` to install packages
