@@ -8,7 +8,7 @@ import copy from 'copy-to-clipboard'
 import { ToastContainer, toast } from 'react-toastify'
 
 import './styles.css'
-import { getSpeechRecognition } from './config/webSpeechAPI'
+import SpeechRecognitionApi from './helpers/SpeechRecognitionApi'
 
 const theme = createMuiTheme()
 
@@ -20,7 +20,7 @@ const LANGUAGES = [
 ]
 
 // Setup Web Speech API
-const recognition = getSpeechRecognition('en-US')
+const recognition = new SpeechRecognitionApi('en-US')
 
 const styles = theme => ({
   container: {
@@ -59,6 +59,14 @@ class App extends Component {
     lang: 'en-US'
   }
 
+  componentWillMount () {
+    try {
+      recognition.onResult(this.updateTranscript)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   handleClearButtonClick = () => {
     this.setState({
       finalTranscript: '',
@@ -73,12 +81,20 @@ class App extends Component {
 
   handleStartButtonClick = () => {
     if (this.state.isRecording) {
-      recognition.stop()
-      this.setState({ isRecording: false })
+      try {
+        recognition.stop()
+        this.setState({ isRecording: false })
+      } catch (error) {
+       toast(`Could not stop recording. ${error.message}`)
+      }
     } else {
-      recognition.onresult = this.updateTranscript
-      recognition.start()
-      this.setState({ isRecording: true })
+      try {
+        recognition.start()
+        this.setState({ isRecording: true })
+      } catch (error) {
+       this.setState({ isRecording: false })
+       toast(`Could not start recording. ${error.message}`)
+      }
     }
   }
 
@@ -102,7 +118,7 @@ class App extends Component {
   }
 
   setLanguage = (lang) => {
-    recognition.lang = lang
+    recognition.changeLanguage(lang)
     this.setState({
       lang: lang
     })
