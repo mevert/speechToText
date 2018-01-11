@@ -21,6 +21,10 @@ class SpeechRecognitionApi {
     }
   }
 
+  isSupported () {
+    return !!this.recognition
+  }
+
   start () {
     this.recognition.start()
   }
