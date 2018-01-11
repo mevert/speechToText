@@ -168,7 +168,7 @@ class App extends Component {
             </Typography>
           </div>
           <Divider light />
-          { recognition ?  
+          { recognition.isSupported() ?  
             this.renderOptions(classes) : 
             <p className={classes.incompatible}>Your browser is incompatible with Web Speech API. Try Chrome.</p>
           }
